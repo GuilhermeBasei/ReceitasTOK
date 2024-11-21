@@ -1,0 +1,10 @@
+<resources>
+    <style name="Theme.ReceitasTOK" parent="Theme.MaterialComponents.DayNight.NoActionBar">
+        <!-- Cores do Tema -->
+        <item name="colorPrimary">#FF3D00</item>
+        <item name="colorPrimaryVariant">#FFC107</item>
+        <item name="colorSecondary">#FF3D00</item>
+        <!-- Cor de fundo da aplicação -->
+        <item name="android:colorBackground">#FFF9F0</item>
+    </style>
+</resources>

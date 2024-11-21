@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "51870148740",
+    "project_id": "ultimatentativa-97a78",
+    "storage_bucket": "ultimatentativa-97a78.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:51870148740:android:b35e3aaedd82af34743ad1",
+        "android_client_info": {
+          "package_name": "com.example.receitastok"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAk54tB45IJCeLgfdE3JoIqTgbxqp1Mbmo"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
