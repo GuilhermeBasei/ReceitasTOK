@@ -1,65 +1,57 @@
 package com.example.receitastok
-import android.net.Uri
+
+import android.content.Intent
 import android.os.Bundle
-import android.view.View
-import android.view.animation.AnimationUtils
-import android.widget.ImageView
-import android.widget.VideoView
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import com.example.receitastok.databinding.ActivityHomeBinding
 
 class HomeActivity : AppCompatActivity() {
 
-    private var isPlaying = true
-
-
     private var binding: ActivityHomeBinding? = null
+
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         binding = ActivityHomeBinding.inflate(layoutInflater)
         setContentView(binding?.root)
 
-        val videoView = findViewById<VideoView>(R.id.videoView)
+        val videoList = listOf(
+            "android.resource://" + packageName + "/" + R.raw.video1,
+            "android.resource://" + packageName + "/" + R.raw.video2,
+            "android.resource://" + packageName + "/" + R.raw.video3
+        )
 
-        val pauseIcon = findViewById<ImageView>(R.id.playPauseIcon)
+        val adapter = VideoAdapter(videoList) { videoUri ->
+            // Aqui você redireciona para a RecipeDetailsActivity
+            val intent = Intent(this, RecipeDetailsActivity::class.java)
+            intent.putExtra("RECEITA_ID", extractReceitaIdFromUri(videoUri)) // Extraia o ID da receita do URI, se aplicável
+            startActivity(intent)
+        }
+        binding?.viewPager?.adapter = adapter
 
-
-        val videoUri = Uri.parse("android.resource://" + packageName + "/" + R.raw.brownie_receita)
-
-        videoView.setVideoURI(videoUri)
-
-        videoView.start()
-
-        videoView.setOnClickListener {
-            if (isPlaying) {
-                videoView.pause()
-                showIconWithFade(pauseIcon)
-            } else {
-                videoView.start()
-                pauseIcon.visibility = View.GONE;
-
-            }
-            isPlaying = !isPlaying
+        binding?.profileIcon?.setOnClickListener {
+            val intent = Intent(this, ProfileActivity::class.java)
+            startActivity(intent)
+        }
+        binding?.commentIcon?.setOnClickListener {
+            val intent = Intent(this, RecipeDetailsActivity::class.java)
+            startActivity(intent)
         }
 
-        videoView.setOnCompletionListener {
-            videoView.start()
-        }
+        binding?.viewPager?.adapter = adapter
+
+        // Começa no meio da lista para simular loop infinito
+        val startPosition = Int.MAX_VALUE / 2 - (Int.MAX_VALUE / 2 % videoList.size)
+        binding?.viewPager?.setCurrentItem(startPosition, false)
+
+
+    }
+    private fun extractReceitaIdFromUri(uri: String): String {
+        // Supondo que o URI seja algo como "android.resource://com.example.app/receita123"
+        return uri.substringAfterLast("/") // Retorna "receita123"
+
     }
 
-    private fun showIconWithFade(icon: ImageView) {
-        icon.visibility = View.VISIBLE
-        val fadeIn = AnimationUtils.loadAnimation(this, R.anim.fade_in)
-        icon.startAnimation(fadeIn)
-    }
-
-    private fun hideIconWithFade(icon: ImageView) {
-        val fadeOut = AnimationUtils.loadAnimation(this, R.anim.fade_out)
-        icon.startAnimation(fadeOut)
-        icon.postDelayed({
-            icon.visibility = View.GONE
-        }, 500) // Duração da animação
-    }
 }

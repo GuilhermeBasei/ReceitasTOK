@@ -6,33 +6,21 @@
     android:layout_height="match_parent"
     android:background="#000000">
 
-    <!-- VideoView for displaying video content -->
-    <VideoView
-        android:id="@+id/videoView"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:keepScreenOn="true"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintBottom_toTopOf="@id/bottomNavigation"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        android:layout_gravity="center"/>
 
-    <!-- Play/Pause button in the center -->
-    <ImageView
-        android:id="@+id/playPauseIcon"
-        android:layout_width="80dp"
-        android:layout_height="80dp"
-        android:src="@drawable/ic_play"
-        android:contentDescription="Play/Pause Icon"
-        android:visibility="gone"
-        android:elevation="12dp"
-        android:layout_centerInParent="true"
-        android:background="@drawable/circle_background"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"/>
+    <androidx.viewpager2.widget.ViewPager2
+        android:id="@+id/viewPager"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_centerInParent="true" />
+
+    <TextureView
+        android:id="@+id/textureView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:contentDescription="Video Texture View" />
+
+
+
 
     <!-- Action buttons (Like, Comment, Share, Profile) on the right side -->
     <LinearLayout
@@ -45,6 +33,16 @@
         android:layout_marginEnd="16dp"
         android:layout_marginBottom="32dp">
 
+        <ImageView
+            android:id="@+id/playPauseIcon"
+            android:layout_width="80dp"
+            android:layout_height="80dp"
+            android:src="@drawable/ic_play"
+            android:contentDescription="Play/Pause Icon"
+            android:layout_centerInParent="true"
+            android:visibility="gone"
+            android:elevation="12dp"
+            android:background="@drawable/circle_background" />
         <!-- Like Button -->
         <LinearLayout
             android:layout_width="wrap_content"

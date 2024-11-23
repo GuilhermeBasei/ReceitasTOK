@@ -8,7 +8,8 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.receitastok.databinding.ItemVideoBinding
 
 class VideoAdapter(
-    private val videoList: List<String>
+    private val videoList: List<String>,
+    private val onVideoClick: (String) -> Unit // Callback para clique
 ) : RecyclerView.Adapter<VideoAdapter.VideoViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): VideoViewHolder {
@@ -19,6 +20,9 @@ class VideoAdapter(
     override fun onBindViewHolder(holder: VideoViewHolder, position: Int) {
         val videoUri = videoList[position % videoList.size] // Loop infinito
         holder.bind(videoUri)
+        holder.itemView.setOnClickListener {
+            onVideoClick(videoUri) // Notifica o clique no vídeo
+        }
     }
 
     override fun getItemCount(): Int = Int.MAX_VALUE // Simular loop infinito
