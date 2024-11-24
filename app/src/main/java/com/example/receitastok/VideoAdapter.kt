@@ -9,7 +9,7 @@ import com.example.receitastok.databinding.ItemVideoBinding
 
 class VideoAdapter(
     private val videoList: List<String>,
-    private val onVideoClick: (String) -> Unit // Callback para clique
+    private val onVideoClick: (String) -> Unit
 ) : RecyclerView.Adapter<VideoAdapter.VideoViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): VideoViewHolder {
@@ -18,14 +18,14 @@ class VideoAdapter(
     }
 
     override fun onBindViewHolder(holder: VideoViewHolder, position: Int) {
-        val videoUri = videoList[position % videoList.size] // Loop infinito
+        val videoUri = videoList[position % videoList.size]
         holder.bind(videoUri)
         holder.itemView.setOnClickListener {
             onVideoClick(videoUri) // Notifica o clique no vídeo
         }
     }
 
-    override fun getItemCount(): Int = Int.MAX_VALUE // Simular loop infinito
+    override fun getItemCount(): Int = Int.MAX_VALUE // Simula loop infinito
 
     class VideoViewHolder(private val binding: ItemVideoBinding) : RecyclerView.ViewHolder(binding.root) {
         fun bind(videoUri: String) {

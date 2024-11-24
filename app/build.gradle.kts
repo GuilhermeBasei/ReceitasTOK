@@ -4,6 +4,7 @@ plugins {
     id("com.google.gms.google-services")
 }
 
+
 android {
     namespace = "com.example.receitastok"
     compileSdk = 34
@@ -56,6 +57,10 @@ dependencies {
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
-    implementation("io.coil-kt.coil3:coil-compose:3.0.3")
-    implementation("io.coil-kt.coil3:coil-network-okhttp:3.0.3")
+    implementation(libs.coil.compose)
+    implementation(libs.coil.network.okhttp);
+    implementation(libs.play.services.location)
 }
+
+
+
