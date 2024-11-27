@@ -1,7 +1,7 @@
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
-    id("com.google.gms.google-services")
+    alias(libs.plugins.google.gms.google.services)
 }
 
 
@@ -60,6 +60,8 @@ dependencies {
     implementation(libs.coil.compose)
     implementation(libs.coil.network.okhttp);
     implementation(libs.play.services.location)
+    implementation(libs.play.services.gcm)
+    implementation(libs.play.services.basement)
 }
 
 

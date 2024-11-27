@@ -6,13 +6,12 @@ import android.util.Log
 import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.view.ViewCompat
-import androidx.core.view.WindowInsetsCompat
 import com.example.receitastok.databinding.ActivityMainBinding
 
 import com.google.firebase.Firebase
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.auth
+import com.google.firebase.firestore.FirebaseFirestore
 
 class MainActivity : AppCompatActivity() {
     private lateinit var auth: FirebaseAuth
@@ -24,6 +23,7 @@ class MainActivity : AppCompatActivity() {
         setContentView(binding?.root)
 
         auth = Firebase.auth
+        FirebaseFirestore.setLoggingEnabled(true)
 
         binding?.btnSignIn?.setOnClickListener {
             val email: String = binding?.etEmail?.text.toString()
