@@ -38,13 +38,15 @@ class HomeActivity : AppCompatActivity() {
 
         // Verificar se há um ID de receita passado pelo Intent
         val receitaId = intent.getStringExtra("RECEITA_ID")
-        if (receitaId != null) {
-            // Carregar receita específica
-            loadRecipeById(receitaId)
-        } else {
-            // Carregar todas as receitas
-            loadRecipes()
-        }
+
+            if (receitaId != null) {
+                // Carregar receita específica
+                loadRecipeById(receitaId)
+            } else {
+                // Carregar todas as receitas
+                loadRecipes()
+            }
+
     }
 
     private fun showSearchDialog() {

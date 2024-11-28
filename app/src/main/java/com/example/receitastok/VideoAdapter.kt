@@ -26,7 +26,7 @@ class VideoAdapter(
     override fun onBindViewHolder(holder: VideoViewHolder, position: Int) {
         val receita = listaReceitas[position % listaReceitas.size]
         holder.bind(receita, homeBinding)
-        holder.itemView.setOnClickListener {
+        homeBinding.commentIcon.setOnClickListener{
             onVideoClick(receita) // Notifica o clique no vídeo
         }
     }
