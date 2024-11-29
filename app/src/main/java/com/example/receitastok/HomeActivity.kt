@@ -36,6 +36,10 @@ class HomeActivity : AppCompatActivity() {
             showSearchDialog()
         }
 
+        binding.navDiscover.setOnClickListener{
+            val intent = Intent(this, HomeActivity::class.java);
+            startActivity(intent);
+        }
         // Verificar se há um ID de receita passado pelo Intent
         val receitaId = intent.getStringExtra("RECEITA_ID")
 
@@ -76,6 +80,7 @@ class HomeActivity : AppCompatActivity() {
                 listaReceitas.clear()
                 for (document in documents) {
                     val receita = document.toObject<Receita>()
+                    receita.id = document.id
                     listaReceitas.add(receita)
                 }
 

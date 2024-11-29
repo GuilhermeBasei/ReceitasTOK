@@ -11,12 +11,15 @@ import com.example.receitastok.databinding.ActivityHomeBinding
 import com.example.receitastok.databinding.ItemVideoBinding
 import com.example.receitastok.model.Receita
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.firestore.FieldValue
+import com.google.firebase.firestore.FirebaseFirestore
 
 class VideoAdapter(
     private val listaReceitas: List<Receita>,
     private val homeBinding: ActivityHomeBinding,
     private val onVideoClick: (Receita) -> Unit,
 ) : RecyclerView.Adapter<VideoAdapter.VideoViewHolder>() {
+
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): VideoViewHolder {
         val binding = ItemVideoBinding.inflate(LayoutInflater.from(parent.context), parent, false)
@@ -33,16 +36,23 @@ class VideoAdapter(
 
     override fun getItemCount(): Int = Int.MAX_VALUE // Simula loop infinito
 
+
     class VideoViewHolder(private val videoBinding: ItemVideoBinding) : RecyclerView.ViewHolder(videoBinding.root) {
         fun bind(receita: Receita, homeBinding: ActivityHomeBinding) {
             homeBinding.likeCount.text = receita.likes.size.toString()
 
             val userId = getUserUid()
 
-            if(receita.likes.contains(userId)) {
-                homeBinding.likeIcon.imageTintList = ColorStateList.valueOf(Color.parseColor("#0000FF"))
-            } else {
-                homeBinding.likeIcon.imageTintList = ColorStateList.valueOf(Color.parseColor("#000000"))
+            verificaLike(receita, homeBinding, userId)
+
+            val receitaId = receita.id
+
+            homeBinding.likeIcon.setOnClickListener{
+                if(verificaLike(receita, homeBinding, userId)){
+                    removeLike(userId,receita,homeBinding)
+                }else{
+                    addLike(userId,receita,homeBinding)
+                }
             }
 
             val videoView: VideoView = videoBinding.videoView
@@ -62,5 +72,47 @@ class VideoAdapter(
                 return ""
             }
         }
+
+        private fun verificaLike (receita: Receita, homeBinding: ActivityHomeBinding, userId: String): Boolean {
+            if(receita.likes.contains(userId)) {
+                homeBinding.likeIcon.imageTintList = ColorStateList.valueOf(Color.parseColor("#0000FF"))
+                return true
+            } else {
+                homeBinding.likeIcon.imageTintList = ColorStateList.valueOf(Color.parseColor("#000000"))
+                return false
+            }
+        }
+        val db = FirebaseFirestore.getInstance()
+
+        private fun addLike(userId: String,receita: Receita, homeBinding:ActivityHomeBinding) {
+            val docRef = db.collection("Receitas").document(receita.id)
+
+            docRef.update("likes", FieldValue.arrayUnion(userId))
+                .addOnSuccessListener {
+                    println("Documento Adicionado com sucesso")
+                    receita.likes.add(userId)
+                    homeBinding.likeCount.text = (homeBinding.likeCount.text.toString().toInt()+1).toString()
+                    verificaLike(receita,homeBinding,userId)
+                }
+                .addOnFailureListener{ e ->
+                    println("Erro ao Adicionar o documento")
+                }
+        }
+
+        private fun removeLike(userId: String, receita: Receita, homeBinding:ActivityHomeBinding){
+            val docRef = db.collection("Receitas").document(receita.id)
+
+            docRef.update("likes", FieldValue.arrayRemove(userId))
+                .addOnSuccessListener {
+                    println("Documento excluido com sucesso")
+                    receita.likes.remove(userId)
+                    homeBinding.likeCount.text = (homeBinding.likeCount.text.toString().toInt()-1).toString()
+                    verificaLike(receita,homeBinding,userId)
+                }
+                .addOnFailureListener{ e ->
+                    println("Erro ao excluir o documento")
+                }
+        }
+        }
     }
-}
+
