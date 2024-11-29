@@ -75,7 +75,7 @@ class VideoAdapter(
 
         private fun verificaLike (receita: Receita, homeBinding: ActivityHomeBinding, userId: String): Boolean {
             if(receita.likes.contains(userId)) {
-                homeBinding.likeIcon.imageTintList = ColorStateList.valueOf(Color.parseColor("#0000FF"))
+                homeBinding.likeIcon.imageTintList = ColorStateList.valueOf(Color.parseColor("#FF0000"))
                 return true
             } else {
                 homeBinding.likeIcon.imageTintList = ColorStateList.valueOf(Color.parseColor("#000000"))

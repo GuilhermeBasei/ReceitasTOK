@@ -25,8 +25,7 @@ class ProfileActivity : AppCompatActivity() {
         //setupRecipesList()
 
         binding.navDiscover.setOnClickListener{
-            val intent = Intent(this, HomeActivity::class.java);
-            startActivity(intent);
+            onBackPressed()
         }
     }
 

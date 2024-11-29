@@ -155,6 +155,7 @@
             android:layout_height="40dp"
             android:layout_marginStart="16dp"
             android:src="@drawable/ic_search"
+            app:tint="#FFFFFF"
             android:contentDescription="Search Recipes" />
 
 

@@ -125,6 +125,7 @@ class HomeActivity : AppCompatActivity() {
                 listaReceitas.clear()
                 for (document in documents) {
                     val receita = document.toObject<Receita>()
+                    receita.id = document.id
                     listaReceitas.add(receita)
                 }
                 if (listaReceitas.isEmpty()) {
@@ -139,9 +140,10 @@ class HomeActivity : AppCompatActivity() {
 
     private fun setupAdapter() {
         // Configurar o adapter com a lista carregada
-        videoAdapter = VideoAdapter(listaReceitas, binding) { receita ->
+        videoAdapter = VideoAdapter(listaReceitas.shuffled(), binding) { receita ->
             val intent = Intent(this, RecipeDetailsActivity::class.java)
             intent.putExtra("RECEITA_OBJETO", receita)
+
             startActivity(intent)
         }
 

@@ -19,7 +19,7 @@ class RecipeDetailsActivity : AppCompatActivity() {
 
         // Configura navegação
         binding.navDiscover.setOnClickListener {
-            navigateToHome()
+            onBackPressed()
         }
 
         val receita = intent.getParcelableExtra("RECEITA_OBJETO", Receita::class.java)
