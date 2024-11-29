@@ -37,24 +37,6 @@
             android:padding="16dp">
 
             <!-- Ingredients section -->
-            <TextView
-                android:id="@+id/ingredientsTitle"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Ingredients"
-                android:textColor="#FFFFFF"
-                android:textSize="18sp"
-                android:textStyle="bold"
-                android:paddingBottom="8dp" />
-
-            <TextView
-                android:id="@+id/ingredientsText"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="• Ingredient 1\n• Ingredient 2\n• Ingredient 3"
-                android:textColor="#CCCCCC"
-                android:textSize="16sp"
-                android:lineSpacingExtra="4dp" />
 
             <!-- Spacer -->
             <View
