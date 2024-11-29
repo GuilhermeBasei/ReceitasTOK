@@ -17,7 +17,6 @@ import com.google.firebase.firestore.FirebaseFirestore
 class VideoAdapter(
     private val listaReceitas: List<Receita>,
     private val homeBinding: ActivityHomeBinding,
-    private val onVideoClick: (Receita) -> Unit,
 ) : RecyclerView.Adapter<VideoAdapter.VideoViewHolder>() {
 
 
@@ -27,11 +26,8 @@ class VideoAdapter(
     }
 
     override fun onBindViewHolder(holder: VideoViewHolder, position: Int) {
-        val receita = listaReceitas[position % listaReceitas.size]
+        val receita = listaReceitas[position]
         holder.bind(receita, homeBinding)
-        homeBinding.commentIcon.setOnClickListener{
-            onVideoClick(receita) // Notifica o clique no vídeo
-        }
     }
 
     override fun getItemCount(): Int = Int.MAX_VALUE // Simula loop infinito
@@ -45,8 +41,6 @@ class VideoAdapter(
 
             verificaLike(receita, homeBinding, userId)
 
-            val receitaId = receita.id
-
             homeBinding.likeIcon.setOnClickListener{
                 if(verificaLike(receita, homeBinding, userId)){
                     removeLike(userId,receita,homeBinding)
@@ -59,8 +53,11 @@ class VideoAdapter(
             val videoUri =
                 Uri.parse("android.resource://${itemView.context.packageName}/raw/${receita.videoName}")
             videoView.setVideoURI(videoUri)
-            videoView.setOnPreparedListener { it.isLooping = true }
-            videoView.start()
+            videoView.setOnPreparedListener { mediaPlayer ->
+                mediaPlayer.isLooping = true
+                videoView.start()
+            }
+            videoView.tag = "video_$position"
         }
 
         private fun getUserUid(): String {

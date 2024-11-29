@@ -5,8 +5,10 @@ import android.content.Intent
 import android.os.Bundle
 import android.widget.EditText
 import android.widget.Toast
+import android.widget.VideoView
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
+import androidx.viewpager2.widget.ViewPager2
 import com.example.receitastok.databinding.ActivityHomeBinding
 import com.example.receitastok.model.Receita
 import com.google.firebase.firestore.FirebaseFirestore
@@ -42,14 +44,13 @@ class HomeActivity : AppCompatActivity() {
         }
         // Verificar se há um ID de receita passado pelo Intent
         val receitaId = intent.getStringExtra("RECEITA_ID")
-
-            if (receitaId != null) {
-                // Carregar receita específica
-                loadRecipeById(receitaId)
-            } else {
-                // Carregar todas as receitas
-                loadRecipes()
-            }
+        if (receitaId != null) {
+            // Carregar receita específica
+            loadRecipeById(receitaId)
+        } else {
+            // Carregar todas as receitas
+            loadRecipes()
+        }
 
     }
 
@@ -94,26 +95,7 @@ class HomeActivity : AppCompatActivity() {
 
     @SuppressLint("NotifyDataSetChanged")
     private fun loadRecipeById(receitaId: String) {
-        firestore.collection("Receitas")
-            .document(receitaId)
-            .get()
-            .addOnSuccessListener { document ->
-                if (document.exists()) {
-                    listaReceitas.clear()
-                    val receita = document.toObject<Receita>()
-                    if (receita != null) {
-                        listaReceitas.add(receita)
-                    }
-
-                    // Inicializar o adapter após carregar a receita
-                    setupAdapter()
-                } else {
-                    Toast.makeText(this, "Receita não encontrada", Toast.LENGTH_SHORT).show()
-                }
-            }
-            .addOnFailureListener { e ->
-                Toast.makeText(this, "Erro ao carregar receita", Toast.LENGTH_SHORT).show()
-            }
+        loadRecipes()
     }
 
     @SuppressLint("NotifyDataSetChanged")
@@ -139,18 +121,26 @@ class HomeActivity : AppCompatActivity() {
     }
 
     private fun setupAdapter() {
-        // Configurar o adapter com a lista carregada
-        videoAdapter = VideoAdapter(listaReceitas.shuffled(), binding) { receita ->
-            val intent = Intent(this, RecipeDetailsActivity::class.java)
-            intent.putExtra("RECEITA_OBJETO", receita)
+        val shuffledReceitas = listaReceitas.shuffled()
 
-            startActivity(intent)
-        }
+        videoAdapter = VideoAdapter(shuffledReceitas, binding)
 
         binding.viewPager.adapter = videoAdapter
 
-        // Configurar a posição inicial no ViewPager
-        val startPosition = Int.MAX_VALUE / 2 - (Int.MAX_VALUE / 2 % (if (listaReceitas.isNotEmpty()) listaReceitas.size else 1))
-        binding.viewPager.setCurrentItem(startPosition, false)
+        binding.viewPager.setCurrentItem(0, false)
+
+        binding.viewPager.registerOnPageChangeCallback(object : ViewPager2.OnPageChangeCallback() {
+            override fun onPageSelected(position: Int) {
+                super.onPageSelected(position)
+
+                val receitaAtual = shuffledReceitas[position]
+
+                binding.commentIcon.setOnClickListener {
+                    val intent = Intent(this@HomeActivity, RecipeDetailsActivity::class.java)
+                    intent.putExtra("RECEITA_OBJETO", receitaAtual)
+                    startActivity(intent)
+                }
+            }
+        })
     }
 }

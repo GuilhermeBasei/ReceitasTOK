@@ -19,21 +19,13 @@ class RecipeDetailsActivity : AppCompatActivity() {
 
         // Configura navegação
         binding.navDiscover.setOnClickListener {
-            onBackPressed()
+            navigateToHome()
         }
 
         val receita = intent.getParcelableExtra("RECEITA_OBJETO", Receita::class.java)
         if (receita != null) {
-            binding.ingredientsTitle.text = receita.titulo
+            binding.instructionsTitle.text = receita.titulo
             binding.instructionsText.text = receita.descricao
-
-//            if (!receita.isNullOrEmpty()) {
-//                binding.recipeImageView.load(imagemUrl) {
-//                    placeholder(R.drawable.placeholder_image)
-//                    error(R.drawable.error_image)
-//                    crossfade(true)
-//                }
-//            }
         } else {
             finish()
         }
